@@ -36,14 +36,7 @@ const ConfigContainer = () => {
         </button>
       </div>
 
-      {/* {assumptions?.length > 0  && assumptions?.map((ass, index) => (
-        <div className="flex gap-2 items-center" key={index}>
-          <span className="flex-1">{ass}</span>
-          <button className="">
-            <BsTrashFill className="w-[30px] h-[30px] rounded bg-red-600 p-2"/>
-          </button>
-        </div>
-      ))} */}
+      
       {assumptions && assumptions.length > 0 && assumptions.map((ass, index) => (
   <div className="flex gap-2 items-center" key={index}>
     <span className="flex-1">{ass}</span>

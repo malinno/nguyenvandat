@@ -1,43 +1,70 @@
 import Modal from "../utils/modal";
 import { useAppContext } from "../providers/app-provider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
+
+interface QuestData {
+  name: string;
+  dataType: string;
+  description: string;
+}
 
 const ModifyQuestModal = () => {
-  const { questModal, setQuestModal, setQuestTypes } = useAppContext()
+  const { questModal, setQuestModal, setQuestTypes } = useAppContext();
 
-  const defaultData = {
-    name: '',
-    dataType: 'string',
-    description: ''
-  }
-  const [data, setData] = useState({ ...defaultData, ...questModal })
+  const defaultData: QuestData = {
+    name: "",
+    dataType: "string",
+    description: "",
+  };
+  const [data, setData] = useState<QuestData>({ ...defaultData, ...questModal });
 
   useEffect(() => {
-    setData({ ...defaultData, ...questModal })
-  }, [questModal])
+    setData({ ...defaultData, ...questModal });
+  }, [questModal]);
 
   const onClick = () => {
-    if (questModal.id !== undefined) {
+    if (questModal?.id !== undefined) {
       if (setQuestTypes) {
-        setQuestTypes(prep => {
-          const updatedQuestTypes = [...prep]
-          updatedQuestTypes[questModal.id] = data
-          return updatedQuestTypes
-        })
+        setQuestTypes((prep) => {
+          const updatedPrep = [...prep];
+          updatedPrep[questModal.id] = data;
+          return updatedPrep;
+        });
       }
     } else {
       if (setQuestTypes) {
-        setQuestTypes(prep => [...prep, data])
+        setQuestTypes((prep) => [...prep, data]);
       }
     }
     if (setQuestModal) {
-      setQuestModal(undefined)
+      setQuestModal(undefined);
     }
-  }
+  };
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setData((prevData) => ({
+      ...prevData,
+      name: e.target.value,
+    }));
+  };
+
+  const handleDataTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setData((prevData) => ({
+      ...prevData,
+      dataType: e.target.value,
+    }));
+  };
+
+  const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setData((prevData) => ({
+      ...prevData,
+      description: e.target.value,
+    }));
+  };
 
   return (
     <Modal
-      title={'Add Quest'}
+      title={"Add Quest"}
       isOpen={!!questModal}
       onClose={() => setQuestModal && setQuestModal(undefined)}
       body={
@@ -47,12 +74,7 @@ const ModifyQuestModal = () => {
             <input
               className="border rounded flex-1 px-3 py-1"
               value={data.name}
-              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setData(prevData => ({
-                  ...prevData,
-                  name: e.target.value
-                }))
-              }
+              onChange={handleNameChange}
             />
           </div>
           <div className="flex gap-3 items-center">
@@ -60,12 +82,7 @@ const ModifyQuestModal = () => {
             <select
               className="border rounded flex-1 px-3 py-1"
               value={data.dataType}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setData(prevData => ({
-                  ...prevData,
-                  dataType: e.target.value
-                }))
-              }
+              onChange={handleDataTypeChange}
             >
               <option value="string">string</option>
               <option value="number">number</option>
@@ -77,19 +94,14 @@ const ModifyQuestModal = () => {
             <input
               className="border rounded flex-1 px-3 py-1"
               value={data.description}
-              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setData(prevData => ({
-                  ...prevData,
-                  description: e.target.value
-                }))
-              }
+              onChange={handleDescriptionChange}
             />
           </div>
           <button onClick={onClick}>Save</button>
         </div>
       }
     />
-  )
-}
+  );
+};
 
 export default ModifyQuestModal;

@@ -8,7 +8,8 @@ export const AppContext = createContext<
     prompt: string,
     setQuestModal: (x: any) => void,
     questModal: any,
-    setQuestTypes: (x: (prep) => any[]) => void
+    // setQuestTypes: (x: (prep) => any[]) => void
+    setQuestTypes: (x: (prep: any[]) => any[]) => void;
 }>>({})
 
 export function AppProvider(props: any) {
