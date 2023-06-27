@@ -10,23 +10,24 @@ const ModifyQuestModal = () => {
     dataType: 'string',
     description: ''
   }
-  const [data, setData] = useState({...defaultData, ...questModal})
+  const [data, setData] = useState({ ...defaultData, ...questModal })
 
   useEffect(() => {
-    setData({...defaultData, ...questModal})
+    setData({ ...defaultData, ...questModal })
   }, [questModal])
 
   const onClick = () => {
     if (questModal.id !== undefined) {
       if (setQuestTypes) {
-        setQuestTypes((prep: any) => {
-          prep[questModal.id]= data
-          return [...prep]
+        setQuestTypes(prep => {
+          const updatedQuestTypes = [...prep]
+          updatedQuestTypes[questModal.id] = data
+          return updatedQuestTypes
         })
       }
     } else {
       if (setQuestTypes) {
-        setQuestTypes((prep: any) => [...prep, ...[data]])
+        setQuestTypes(prep => [...prep, data])
       }
     }
     if (setQuestModal) {
@@ -46,13 +47,11 @@ const ModifyQuestModal = () => {
             <input
               className="border rounded flex-1 px-3 py-1"
               value={data.name}
-              onInput={(e: any) =>
-                setData(prep => {
-                  return {
-                    ...prep,
-                    name: e.target?.value
-                  }
-                })
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setData(prevData => ({
+                  ...prevData,
+                  name: e.target.value
+                }))
               }
             />
           </div>
@@ -61,13 +60,11 @@ const ModifyQuestModal = () => {
             <select
               className="border rounded flex-1 px-3 py-1"
               value={data.dataType}
-              onChange={(e: any) =>
-                setData(prep => {
-                  return {
-                    ...prep,
-                    dataType: e.target?.value
-                  }
-                })
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setData(prevData => ({
+                  ...prevData,
+                  dataType: e.target.value
+                }))
               }
             >
               <option value="string">string</option>
@@ -80,13 +77,11 @@ const ModifyQuestModal = () => {
             <input
               className="border rounded flex-1 px-3 py-1"
               value={data.description}
-              onInput={(e: any) =>
-                setData(prep => {
-                  return {
-                    ...prep,
-                    description: e.target?.value
-                  }
-                })
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setData(prevData => ({
+                  ...prevData,
+                  description: e.target.value
+                }))
               }
             />
           </div>
